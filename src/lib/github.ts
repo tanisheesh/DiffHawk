@@ -1,16 +1,16 @@
-import { App } from '@octokit/app';
+import { Octokit } from '@octokit/rest';
+import { createAppAuth } from '@octokit/auth-app';
 import { config } from './config';
 
-const app = new App({
-  appId: config.githubAppId,
-  privateKey: config.githubPrivateKey,
-});
-
-// Cast to any: @octokit/app's generic doesn't surface rest/paginate plugin types
-// but they are present at runtime via the bundled plugins.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function getInstallationOctokit(installationId: number): Promise<any> {
-  return app.getInstallationOctokit(installationId);
+export async function getInstallationOctokit(installationId: number): Promise<Octokit> {
+  return new Octokit({
+    authStrategy: createAppAuth,
+    auth: {
+      appId: config.githubAppId,
+      privateKey: config.githubPrivateKey,
+      installationId,
+    },
+  });
 }
 
 const SKIP_PATTERNS = [
@@ -62,7 +62,7 @@ export interface ReviewResult {
 }
 
 export async function fetchDiff(
-  octokit: any,
+  octokit: Octokit,
   owner: string,
   repo: string,
   prNumber: number
@@ -99,7 +99,7 @@ function severityLabel(s: Finding['severity']): string {
 }
 
 export async function postReview(
-  octokit: any,
+  octokit: Octokit,
   owner: string,
   repo: string,
   prNumber: number,
