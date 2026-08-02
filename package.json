@@ -1,0 +1,38 @@
+{
+  "name": "diffhawk",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "worker": "node --env-file=.env.local --import=tsx worker/index.ts",
+    "worker:dev": "node --env-file=.env.local --watch --import=tsx worker/index.ts",
+    "setup": "tsx scripts/setup.ts"
+  },
+  "dependencies": {
+    "@octokit/app": "^16.1.2",
+    "@types/nodemailer": "^8.0.1",
+    "bullmq": "^6.0.5",
+    "dotenv": "^17.4.2",
+    "groq-sdk": "^1.5.0",
+    "ioredis": "^6.0.0",
+    "next": "16.2.12",
+    "nodemailer": "^9.0.3",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.12",
+    "tailwindcss": "^4",
+    "tsx": "^4.23.4",
+    "typescript": "^5"
+  }
+}
