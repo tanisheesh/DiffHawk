@@ -36,7 +36,7 @@ export async function processReview(job: Job) {
     const errMessage = err instanceof Error ? err.message : String(err);
     // Secondary rate limits (403) are retriable — only hard-fail on auth/not-found/validation errors
     const isSecondaryRateLimit = errMessage.includes('secondary rate limit');
-    if (!isSecondaryRateLimit && (httpStatus === 404 || httpStatus === 422)) {
+    if (!isSecondaryRateLimit && (httpStatus === 401 || httpStatus === 404 || httpStatus === 422)) {
       throw new UnrecoverableError(errMessage);
     }
     if (httpStatus === 403 && !isSecondaryRateLimit) {

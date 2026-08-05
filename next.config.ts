@@ -1,5 +1,7 @@
 import type { NextConfig } from 'next';
 
+// CSP is set per-request with a cryptographic nonce in src/proxy.ts (middleware).
+// Static headers only — no CSP here to avoid caching a static nonce.
 const SECURITY_HEADERS = [
   { key: 'X-Frame-Options', value: 'DENY' },
   { key: 'X-Content-Type-Options', value: 'nosniff' },

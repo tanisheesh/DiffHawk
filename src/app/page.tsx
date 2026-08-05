@@ -142,7 +142,7 @@ export default function LandingPage() {
           { v: 'RANKED', sub: 'Blocker → Major → Minor → Nit' },
         ].map((s, i) => (
           <div
-            key={i}
+            key={s.v}
             className="stats-bar-item"
             style={{ borderRight: i < 2 ? '3px solid #0A0A0A' : 'none' }}
           >

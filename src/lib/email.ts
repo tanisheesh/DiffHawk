@@ -38,7 +38,12 @@ export async function sendSummaryEmail(opts: {
     return;
   }
 
-  const { repo, prNumber, prTitle, prUrl, result } = opts;
+  if (!process.env.EMAIL_FROM || !process.env.EMAIL_TO) {
+    console.warn(JSON.stringify({ event: 'email.skipped', reason: 'EMAIL_FROM or EMAIL_TO not set' }));
+    return;
+  }
+
+  const { owner, repo, prNumber, prTitle, prUrl, result } = opts;
 
   const counts = { blocker: 0, major: 0, minor: 0, nit: 0 };
   for (const f of result.findings) counts[f.severity]++;
@@ -52,7 +57,7 @@ export async function sendSummaryEmail(opts: {
   await transporter.sendMail({
     from: process.env.EMAIL_FROM,
     to: process.env.EMAIL_TO,
-    subject: `[DiffHawk] ${repo} PR #${prNumber}: ${verdict}`,
+    subject: `[DiffHawk] ${owner}/${repo} PR #${prNumber}: ${verdict}`,
     html: buildHtml({ prNumber, prTitle, prUrl, result, counts }),
   });
 }

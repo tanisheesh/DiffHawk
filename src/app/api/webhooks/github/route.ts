@@ -2,6 +2,7 @@ import crypto from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
 import { reviewQueue } from '@/lib/queue';
 import { config } from '@/lib/config';
+import { checkInstallationRateLimit } from '@/lib/ratelimit';
 
 const RELEVANT_ACTIONS = new Set(['opened', 'reopened', 'synchronize']);
 
@@ -70,6 +71,19 @@ export async function POST(req: NextRequest) {
   }
 
   const jobId = `${installation.id}-${repository.full_name}-${pr.number}-${pr.head.sha}`;
+
+  // Per-installation daily cap — fail open so Redis outages don't block reviews
+  try {
+    const { allowed, remaining } = await checkInstallationRateLimit(installation.id);
+    if (!allowed) {
+      console.warn(JSON.stringify({ event: 'ratelimit.exceeded', installationId: installation.id, repo: repository.full_name, pr: pr.number }));
+      return NextResponse.json({ message: 'Accepted' }); // 200 so GitHub doesn't retry
+    }
+    console.log(JSON.stringify({ event: 'ratelimit.ok', installationId: installation.id, remaining }));
+  } catch (err) {
+    console.error(JSON.stringify({ event: 'ratelimit.error', error: err instanceof Error ? err.message : String(err) }));
+    // Proceed — better to process an extra review than silently drop it
+  }
 
   try {
     await reviewQueue.add(

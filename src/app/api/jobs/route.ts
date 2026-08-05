@@ -40,11 +40,14 @@ export async function GET() {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  if (ALLOWED_LOGINS.length > 0) {
-    const login = (session.user as { login?: string }).login ?? '';
-    if (!ALLOWED_LOGINS.includes(login)) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-    }
+  // Fail-safe: if no allowlist is configured, deny all access rather than exposing job data to any GitHub user
+  if (ALLOWED_LOGINS.length === 0) {
+    return NextResponse.json({ error: 'Dashboard not configured — set ALLOWED_GITHUB_LOGINS' }, { status: 503 });
+  }
+
+  const login = (session.user as { login?: string }).login ?? '';
+  if (!ALLOWED_LOGINS.includes(login)) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
   const [completed, failed, active, waiting] = await Promise.all([
