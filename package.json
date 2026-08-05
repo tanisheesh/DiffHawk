@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev --turbopack -p 3001",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -14,18 +14,18 @@
     "setup:oauth": "node --import=tsx scripts/setup-oauth.ts"
   },
   "dependencies": {
-    "@octokit/app": "^16.1.2",
+    "@octokit/auth-app": "^8.3.0",
     "@octokit/rest": "^22.0.1",
-    "@types/nodemailer": "^8.0.1",
-    "bullmq": "^6.0.5",
+    "@types/nodemailer": "^6.4.17",
+    "bullmq": "^6.0.8",
     "dotenv": "^17.4.2",
     "groq-sdk": "^1.5.0",
     "ioredis": "^6.0.0",
-    "next": "16.2.12",
+    "next": "16.3.0",
     "next-auth": "^4.24.15",
-    "nodemailer": "^9.0.3",
-    "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "nodemailer": "^9.0.4",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -33,9 +33,9 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.2.12",
+    "eslint-config-next": "16.3.0",
     "tailwindcss": "^4",
-    "tsx": "^4.23.4",
+    "tsx": "^4.23.6",
     "typescript": "^5"
   }
 }

@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, Fragment } from 'react';
 
 interface Finding {
   file: string;
@@ -81,9 +81,9 @@ function FindingsPanel({ findings }: { findings: Finding[] }) {
 
   return (
     <div style={{ padding: '16px 24px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-      {sorted.map((f, i) => (
+      {sorted.map((f) => (
         <div
-          key={i}
+          key={`${f.file}:${f.line}:${f.severity}`}
           style={{
             display: 'grid',
             gridTemplateColumns: 'auto auto 1fr',
@@ -127,17 +127,24 @@ function FindingsPanel({ findings }: { findings: Finding[] }) {
 export default function DashboardPage() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState<string | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
 
   const fetchJobs = useCallback(async () => {
     try {
       const res = await fetch('/api/jobs');
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        setFetchError(body.error ?? `Error ${res.status}`);
+        return;
+      }
       const data = await res.json();
       setJobs(data.jobs ?? []);
+      setFetchError(null);
       setLastRefresh(new Date());
     } catch {
-      // silent — will retry
+      setFetchError('Network error — retrying…');
     } finally {
       setLoading(false);
     }
@@ -211,6 +218,22 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {fetchError && (
+          <div
+            style={{
+              border: '3px solid var(--color-danger)',
+              background: 'var(--color-surface)',
+              padding: '16px 20px',
+              marginBottom: '16px',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '13px',
+              color: 'var(--color-danger)',
+            }}
+          >
+            {fetchError}
+          </div>
+        )}
+
         {loading ? (
           <div
             style={{
@@ -283,9 +306,9 @@ export default function DashboardPage() {
                   };
                   const isOpen = expandedId === job.id;
 
-                  return [
+                  return (
+                  <Fragment key={job.id}>
                     <tr
-                      key={`row-${job.id}`}
                       className="job-row"
                       onClick={() => setExpandedId(isOpen ? null : job.id)}
                       aria-expanded={isOpen}
@@ -382,10 +405,10 @@ export default function DashboardPage() {
                           {timeAgo(job.timestamp)}
                         </span>
                       </td>
-                    </tr>,
+                    </tr>
 
-                    isOpen && (
-                      <tr key={`detail-${job.id}`} className="job-detail">
+                    {isOpen && (
+                      <tr className="job-detail">
                         <td colSpan={5} style={{ padding: 0 }}>
                           {job.result ? (
                             <div>
@@ -413,8 +436,9 @@ export default function DashboardPage() {
                           )}
                         </td>
                       </tr>
-                    ),
-                  ];
+                    )}
+                  </Fragment>
+                  );
                 })}
               </tbody>
             </table>

@@ -1,13 +1,15 @@
 import type { AuthOptions } from 'next-auth';
 import GitHubProvider from 'next-auth/providers/github';
+import { requireEnv } from './config';
 
 export const authOptions: AuthOptions = {
   providers: [
     GitHubProvider({
-      clientId: process.env.GITHUB_OAUTH_CLIENT_ID ?? '',
-      clientSecret: process.env.GITHUB_OAUTH_CLIENT_SECRET ?? '',
+      clientId: requireEnv('GITHUB_OAUTH_CLIENT_ID'),
+      clientSecret: requireEnv('GITHUB_OAUTH_CLIENT_SECRET'),
     }),
   ],
+  secret: requireEnv('NEXTAUTH_SECRET'),
   pages: { signIn: '/' },
   session: { strategy: 'jwt' },
   callbacks: {
@@ -20,8 +22,9 @@ export const authOptions: AuthOptions = {
     },
     async session({ session, token }) {
       if (session.user) {
-        (session.user as { login?: string; avatarUrl?: string }).login = token.login as string;
-        (session.user as { login?: string; avatarUrl?: string }).avatarUrl = token.avatarUrl as string;
+        const user = session.user as { login?: string; avatarUrl?: string };
+        user.login = typeof token.login === 'string' ? token.login : undefined;
+        user.avatarUrl = typeof token.avatarUrl === 'string' ? token.avatarUrl : undefined;
       }
       return session;
     },
