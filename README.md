@@ -23,7 +23,8 @@
   <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=node.js&logoColor=white" alt="Node.js">
   <img src="https://img.shields.io/badge/Groq-F55036?style=flat-square" alt="Groq">
   <img src="https://img.shields.io/badge/Redis-DC382D?style=flat-square&logo=redis&logoColor=white" alt="Redis">
-  <img src="https://img.shields.io/badge/Railway-0B0D0E?style=flat-square&logo=railway&logoColor=white" alt="Railway">
+  <img src="https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white" alt="Vercel">
+  <img src="https://img.shields.io/badge/Render-46E3B7?style=flat-square&logo=render&logoColor=black" alt="Render">
   <img src="https://img.shields.io/badge/license-GPL--3.0-F5C200?style=flat-square" alt="License">
 </p>
 
@@ -57,7 +58,7 @@ DiffHawk is a GitHub App that automatically reviews every pull request on your r
 | GitHub | @octokit/rest · @octokit/auth-app (App installation tokens) |
 | Email | Nodemailer · Gmail SMTP |
 | Styling | Tailwind CSS 4 · Barlow / Barlow Condensed |
-| Hosting | Railway (Web service + Worker service + Redis plugin) |
+| Hosting | Vercel (web) · Render (worker + Redis) |
 
 ---
 
