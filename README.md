@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <a href="https://diffhawk.up.railway.app">
+  <a href="https://diffhawk.tanisheesh.in/">
     <img src="https://img.shields.io/badge/live_demo-F5C200-F5C200?style=flat-square" alt="Live Demo">
   </a>
   <img src="https://img.shields.io/badge/Next.js-black?style=flat-square&logo=next.js" alt="Next.js">
@@ -33,7 +33,7 @@
 
 DiffHawk is a GitHub App that automatically reviews every pull request on your repos — no manual triggering, no configuration per repo. The moment a PR is opened or updated, DiffHawk receives the webhook, fetches the diff, sends it to Groq's Llama 3.3-70B model with a tightly scoped system prompt, and posts inline review comments anchored to exact diff lines alongside a severity-ranked summary email — all within about 30 seconds. It's installed on its own development repos (DiffHawk, DevPulse, InterviewOS), so every PR made while building those projects is reviewed live — proof that ships with the product, not a staged demo.
 
-> **Live demo →** [diffhawk.up.railway.app](https://diffhawk.up.railway.app)
+> **Live demo →** [https://diffhawk.tanisheesh.in/](https://diffhawk.tanisheesh.in/)
 
 ---
 
