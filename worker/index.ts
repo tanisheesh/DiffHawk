@@ -1,5 +1,6 @@
 import { Worker } from 'bullmq';
 import IORedis from 'ioredis';
+import http from 'node:http';
 import { config } from '../src/lib/config.js';
 import { processReview } from './review.js';
 
@@ -45,3 +46,7 @@ process.on('SIGTERM', shutdown);
 process.on('SIGINT', shutdown);
 
 console.log(JSON.stringify({ event: 'worker.started', concurrency: config.workerConcurrency }));
+
+// Health check endpoint — required for Render Web Service free tier (prevents spin-down)
+const port = process.env.PORT ?? 3002;
+http.createServer((_, res) => res.end('ok')).listen(port);
