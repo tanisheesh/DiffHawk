@@ -50,6 +50,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           >
             @{displayName}
           </span>
+          <a
+            href="https://github.com/apps/diffhawk/installations/new"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-sm"
+          >
+            + Install App
+          </a>
           <button
             className="btn btn-sm"
             onClick={() => signOut({ callbackUrl: '/' })}

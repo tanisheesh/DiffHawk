@@ -109,6 +109,15 @@ export default function LandingPage() {
               </button>
             )}
             <a
+              href="https://github.com/apps/diffhawk/installations/new"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-ink"
+              style={{ fontSize: '16px', padding: '14px 30px' }}
+            >
+              Install on GitHub ↗
+            </a>
+            <a
               href="https://github.com/tanisheesh/DiffHawk"
               target="_blank"
               rel="noopener noreferrer"
@@ -312,23 +321,34 @@ export default function LandingPage() {
         <p style={{ fontSize: '16px', color: '#3A3500', margin: 0, maxWidth: '460px', lineHeight: 1.65 }}>
           DiffHawk never sleeps, never misses a SQL injection, and doesn&apos;t need a PR to be assigned to it.
         </p>
-        {isAuthed ? (
-          <Link
-            href="/dashboard"
+        <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+          <a
+            href="https://github.com/apps/diffhawk/installations/new"
+            target="_blank"
+            rel="noopener noreferrer"
             className="btn btn-ink"
             style={{ fontSize: '16px', padding: '14px 30px' }}
           >
-            Go to Dashboard →
-          </Link>
-        ) : (
-          <button
-            className="btn btn-ink"
-            style={{ fontSize: '16px', padding: '14px 30px' }}
-            onClick={() => signIn('github', { callbackUrl: '/dashboard' })}
-          >
-            Sign in with GitHub →
-          </button>
-        )}
+            Install on GitHub ↗
+          </a>
+          {isAuthed ? (
+            <Link
+              href="/dashboard"
+              className="btn"
+              style={{ fontSize: '16px', padding: '14px 30px', color: 'var(--color-paper)', borderColor: '#2E2E2E' }}
+            >
+              Dashboard →
+            </Link>
+          ) : (
+            <button
+              className="btn"
+              style={{ fontSize: '16px', padding: '14px 30px', color: 'var(--color-paper)', borderColor: '#2E2E2E' }}
+              onClick={() => signIn('github', { callbackUrl: '/dashboard' })}
+            >
+              Sign in →
+            </button>
+          )}
+        </div>
       </section>
 
       {/* ── Footer ──────────────────────────────────── */}
