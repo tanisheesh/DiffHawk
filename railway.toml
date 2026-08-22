@@ -1,0 +1,25 @@
+# ─── Web service (Next.js) ───────────────────────────────────────────────────
+# Railway dashboard → New Service → GitHub repo → set start command below.
+# Build:  npm run build
+# Start:  node .next/standalone/server.js
+# Domain: assign the Railway-generated URL here, then paste it into
+#         GitHub App settings → Webhook URL:  https://<url>/api/webhooks/github
+
+[build]
+builder = "NIXPACKS"
+buildCommand = "npm ci && npm run build"
+
+[deploy]
+startCommand = "node .next/standalone/server.js"
+healthcheckPath = "/api/health"
+healthcheckTimeout = 30
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
+
+# ─── Worker service ───────────────────────────────────────────────────────────
+# Add a SECOND Railway service from the same repo with:
+# Build:  npm ci
+# Start:  npm run worker
+#
+# Both services must share the same env vars + the Redis plugin.
+# Worker does NOT need a public domain.
